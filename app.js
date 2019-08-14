@@ -24,7 +24,7 @@ const totalGrades = 410;
 
   //Should work fine 
   //min nearly 110000
-  //max nearly 600000
+  //max nearly 690000
   const seating_num_begin = process.argv[2];
   const seating_num_end = process.argv[3];
 
