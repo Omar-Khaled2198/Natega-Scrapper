@@ -2,17 +2,7 @@ const puppeteer = require("puppeteer");
 var fs = require("fs");
 var writeStream = fs.createWriteStream("natega.xls");
 
-var header =
-  "Name" +
-  "\t" +
-  "Setting Number" +
-  "\t" +
-  "Status" +
-  "\t" +
-  "Total" +
-  "\t" +
-  "Percent" +
-  "\n";
+var header ="Name" +"\t" +"Setting Number" +"\t" +"Status" +"\t" +"Total" +"\t" +"Percent" +"\n";
 
 writeStream.write(header);
 
@@ -32,8 +22,9 @@ const totalGrades = 410;
     
   }
 
-  //min nearly 101000
-  //max nearly 530100
+  //Should work fine 
+  //min nearly 150000
+  //max nearly 600000
   const setting_number_begin = process.argv[2];
   const setting_number_end = process.argv[3];
 
