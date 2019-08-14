@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 var fs = require("fs");
 var writeStream = fs.createWriteStream("natega.xls");
 
-var header ="Name" +"\t" +"Setting Number" +"\t" +"Status" +"\t" +"Total" +"\t" +"Percent" +"\n";
+var header ="Name" +"\t" +"Seating Number" +"\t" +"Status" +"\t" +"Total" +"\t" +"Percent" +"\n";
 
 writeStream.write(header);
 
@@ -23,16 +23,17 @@ const totalGrades = 410;
   }
 
   //Should work fine 
-  //min nearly 150000
+  //min nearly 110000
   //max nearly 600000
-  const setting_number_begin = process.argv[2];
-  const setting_number_end = process.argv[3];
+  const seating_num_begin = process.argv[2];
+  const seating_num_end = process.argv[3];
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.goto("http://natega.thanwya.emis.gov.eg/");
 
-  for (var i = setting_number_begin; i < setting_number_end; i++) {
+  for (var i = seating_num_begin; i < seating_num_end; i++) {
+
     await page.focus("#TextBox1");
     await page.keyboard.down("Control");
     await page.keyboard.press("A");
@@ -45,13 +46,13 @@ const totalGrades = 410;
     let data = await page.evaluate(() => {
       if (document.querySelector("span[id=std_name]") != null) {
         let name = document.querySelector("span[id=std_name]").innerHTML;
-        let setting_num = document.querySelector("span[id=seating_no]")
+        let seating_num = document.querySelector("span[id=seating_no]")
           .innerHTML;
         let status = document.querySelector("span[id=Label7]").innerHTML;
         let total = document.querySelector("span[id=total]").innerHTML;
         return {
           name,
-          setting_num,
+          seating_num,
           status,
           total
         };
@@ -64,13 +65,16 @@ const totalGrades = 410;
       var row =
         data.name +
         "\t" +
-        data.setting_num +
+        data.seating_num +
         "\t" +
         data.status +
         "\t" +
-        isNaN(data.total)
-          ? "\n"
-          : data.total + "\t" + (data.total / totalGrades) * 100 + "%" + "\n";
+        data.total +
+        "\t" +
+        (data.total / totalGrades) * 100 + 
+        "%" + 
+        "\n";
+        
 
       await writeStream.write(row);
     }
